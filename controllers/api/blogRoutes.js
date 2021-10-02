@@ -15,8 +15,34 @@ router.get('/:id', async (req, res) => {
 });
 
 // create a new post
+router.post('/', authBlocck, async (req,res) => {
+    try {
+        const newPost = await Post.create({
+            title: req.body.title,
+            userName_id: req.body.userName_id,
+            bodyText: req.body.bodyText,
+        });
 
+        const data = newPost.get({plain:true});
+        res.status(200).json(data.id);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
 
-// creates a new comment
+// creates a new comment use POST request with create
+router.post('/comment', authBlock, async(req,res) => {
+    try {
+        const newCom = await Comment.create({
+            userName_id = req.session.user_id,
+            body: req.body.bodyText,
+            post_id: req.body.post_id
+        });
+        const comData = newCom.get({plain:true});
+        res.status(200).json(comData);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
 
 // update existing blog post
