@@ -46,3 +46,22 @@ router.post('/comment', authBlock, async(req,res) => {
 });
 
 // update existing blog post
+router.put('/:id', authBlock, async(req,res) => {
+    try {
+        const update = await Post.update(
+            {
+                title: req.body.title,
+                body: req.body.bodyText,
+                userName_id: req.session.user_id
+            },
+            { where: { id: req.params.id } }
+        );
+        const blogData = update.get({ plain: true });
+        res.status(200).json(blogData.id);
+    } catch (err){
+        res.status(500).json(err);
+    }
+})
+
+
+module.exports = router;
