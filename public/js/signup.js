@@ -15,4 +15,37 @@ const signup = () => {
       return data;
     }
 
+    async function submit() {
+        event.preventDefault();
+        clearError();
+        let user = getData();
+    
+        // don't do anything if the get data didn't work.
+        if (!user) {
+          return;
+        }
+    
+        const response = await fetch('/api/users/signup', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: user.name,
+            email: user.email,
+            password: user.password,
+          }),
+          headers: { 'Content-Type': 'application/json' },
+        });
+    
+        if (response.ok) {
+          document.location.replace('/');
+        } else {
+          document.location.replace('/signup?error=DBErr');
+        }
+      }
+    
+      // set up event handlers
+    
+    // Trigger when document is ready
+    $(function () {
+      signup.init();
+    });
 }
