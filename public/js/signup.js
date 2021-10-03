@@ -43,9 +43,23 @@ const signup = () => {
       }
     
       // set up event handlers
+      function init() {
+        $('#signup-button').on('click', submit);
     
+        const urlParams = window.location.search;
+        const params = new URLSearchParams(urlParams);
+    
+        if (params.has('error')) {
+          $('#error-box').toggleClass('hidden');
+        }
+      }
+    
+    return {
+        init: init,
+    }};
+
     // Trigger when document is ready
-    $(function () {
-      signup.init();
-    });
-}
+$(function () {
+    signup.init();
+});
+
